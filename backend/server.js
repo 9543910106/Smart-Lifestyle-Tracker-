@@ -353,7 +353,7 @@ app.post("/api/auth/google", async (req, res) => {
     console.error("Google Login error:", error);
     res.status(500).json({
       success: false,
-      message: "Failed to authenticate with Google",
+      message: "BACKEND ERROR: " + error.toString(),
     });
   }
 });

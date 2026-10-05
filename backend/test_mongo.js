@@ -1,0 +1,1 @@
+const mongoose = require('mongoose'); mongoose.connect('mongodb+srv://2416095_db_user:pratheesh2026@cluster0.pjqtynq.mongodb.net/smart_lifestyle_tracker?retryWrites=true&w=majority').then(() => { console.log('SUCCESS'); process.exit(0); }).catch(err => { console.error('FAILED:', err.message); process.exit(1); });
