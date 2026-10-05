@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { GoogleLogin } from "@react-oauth/google";
 
 const API = "http://localhost:5000/api";
 
@@ -12,6 +13,34 @@ function Register({ onRegisterSuccess, onShowLogin }) {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  async function handleGoogleSuccess(credentialResponse) {
+    try {
+      setLoading(true);
+      setError("");
+
+      const response = await fetch(`${API}/auth/google`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token: credentialResponse.credential }),
+      });
+
+      const result = await response.json();
+      if (!result.success) {
+        throw new Error(result.message || "Google registration failed");
+      }
+
+      localStorage.setItem("token", result.token);
+      if (onRegisterSuccess) {
+        onRegisterSuccess(result.user);
+      }
+    } catch (err) {
+      console.error(err);
+      setError(err.message || "Unable to register with Google");
+    } finally {
+      setLoading(false);
+    }
+  }
 
   async function handleRegister(event) {
     event.preventDefault();
@@ -221,14 +250,12 @@ function Register({ onRegisterSuccess, onShowLogin }) {
           <span>OR</span>
         </div>
 
-        <button 
-          className="google-auth-button"
-          type="button"
-          onClick={() => alert("To enable Google Login:\n\n1. Go to Google Cloud Console\n2. Create an OAuth 2.0 Client ID\n3. Provide the client ID to the app in the code.")}
-        >
-          <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google logo" className="google-logo" />
-          Continue with Google
-        </button>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <GoogleLogin 
+            onSuccess={handleGoogleSuccess} 
+            onError={() => setError("Google registration failed.")} 
+          />
+        </div>
 
         <div className="auth-switch">
           <span>

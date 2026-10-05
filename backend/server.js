@@ -5,6 +5,8 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { OAuth2Client } = require("google-auth-library");
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 const Habit = require("./models/Habit");
 const Sleep = require("./models/Sleep");
@@ -30,7 +32,7 @@ app.use(express.json());
 
 mongoose
   .connect(
-    "mongodb://127.0.0.1:27017/smart_lifestyle_tracker"
+    process.env.MONGO_URI || "mongodb://127.0.0.1:27017/smart_lifestyle_tracker"
   )
   .then(() => {
     console.log("====================================");
@@ -286,6 +288,75 @@ app.post(
     }
   }
 );
+
+
+// ==========================================
+// AUTHENTICATION
+// GOOGLE LOGIN
+// ==========================================
+
+app.post("/api/auth/google", async (req, res) => {
+  try {
+    const { token } = req.body;
+    
+    if (!token) {
+      return res.status(400).json({ success: false, message: "Google token is required" });
+    }
+
+    const ticket = await googleClient.verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+    const email = payload.email.toLowerCase();
+    const name = payload.name;
+
+    let user = await User.findOne({ email });
+
+    if (!user) {
+      // Create a new user without a standard password (or a random strong one)
+      const randomPassword = Math.random().toString(36).slice(-10) + Math.random().toString(36).slice(-10);
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(randomPassword, salt);
+
+      user = new User({
+        name: name,
+        email: email,
+        password: hashedPassword,
+      });
+
+      await user.save();
+      console.log("New user registered via Google:", email);
+    } else {
+      console.log("User logged in via Google:", email);
+    }
+
+    const jwtToken = jwt.sign(
+      { userId: user._id, email: user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    res.json({
+      success: true,
+      message: "Google login successful!",
+      token: jwtToken,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+      },
+    });
+
+  } catch (error) {
+    console.error("Google Login error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to authenticate with Google",
+    });
+  }
+});
 
 
 // ==========================================
