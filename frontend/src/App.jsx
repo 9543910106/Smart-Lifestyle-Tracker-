@@ -6,7 +6,6 @@ import {
 
 import "./App.css";
 
-import Register from "./Register";
 import Login from "./Login";
 import Landing from "./Landing";
 
@@ -1116,25 +1115,15 @@ function App() {
     if (authScreen === "landing") {
       return (
         <Landing
-          onGetStarted={showRegister}
+          onGetStarted={showLogin}
           onLogin={showLogin}
         />
       );
     }
 
-    if (authScreen === "login") {
-      return (
-        <Login
-          onLoginSuccess={handleLoginSuccess}
-          onShowRegister={showRegister}
-        />
-      );
-    }
-
     return (
-      <Register
-        onRegisterSuccess={handleRegisterSuccess}
-        onShowLogin={showLogin}
+      <Login
+        onLoginSuccess={handleLoginSuccess}
       />
     );
   }
