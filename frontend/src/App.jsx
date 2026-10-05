@@ -10,7 +10,7 @@ import Register from "./Register";
 import Login from "./Login";
 import Landing from "./Landing";
 
-const API = "http://localhost:5000/api";
+const API = "https://smart-lifestyle-tracker.onrender.com/api";
 
 const DEFAULT_HABITS = [
   "Study",

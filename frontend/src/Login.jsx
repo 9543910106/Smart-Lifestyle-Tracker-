@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { GoogleLogin } from "@react-oauth/google";
 
-const API = "http://localhost:5000/api";
+const API = "https://smart-lifestyle-tracker.onrender.com/api";
 
 function Login({ onLoginSuccess, onShowRegister }) {
   const [email, setEmail] = useState("");
