@@ -156,6 +156,30 @@ header p {
   background: var(--wellness-mint);
 }
 
+.add-habit-form {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.add-habit-input {
+  flex: 1;
+  max-width: 300px;
+  padding: 10px 16px;
+  font-size: 15px;
+  color: var(--wellness-text);
+  border: 2px solid var(--wellness-border);
+  border-radius: 12px;
+  background: var(--wellness-card-bg);
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.add-habit-input:focus {
+  border-color: var(--wellness-sage);
+  box-shadow: 0 0 0 3px rgba(107, 143, 119, 0.15);
+}
+
 .logout-button, .add-habit-button, .profile-action-button, .auth-submit-button, .note-button-container button {
   background: var(--wellness-sage);
   color: white;
@@ -285,19 +309,34 @@ header p {
 .table-container {
   border: 1px solid var(--wellness-border);
   border-radius: 16px;
-  overflow: auto; /* Changed to auto so it scrolls horizontally if needed */
+  overflow-x: auto;
   box-shadow: 0 4px 15px rgba(0,0,0,0.02);
 }
 
-.habit-table, .sleep-grid {
+.habit-table {
   display: grid;
-  grid-template-columns: 200px repeat(auto-fit, minmax(40px, 1fr));
-  width: 100%;
-  min-width: 800px; /* Ensure it scrolls nicely */
+  grid-template-columns: 200px repeat(var(--day-count), 42px);
+  width: max-content;
+  min-width: max-content;
   background: white;
 }
 
-.habit-table > div, .sleep-grid > div {
+.habit-row {
+  display: grid;
+  grid-template-columns: 200px repeat(var(--day-count), 42px);
+  grid-column: 1 / -1;
+  width: max-content;
+}
+
+.sleep-grid {
+  display: grid;
+  grid-template-columns: 200px repeat(var(--day-count), 60px);
+  width: max-content;
+  min-width: max-content;
+  background: white;
+}
+
+.habit-table > div, .habit-row > div, .sleep-grid > div {
   padding: 12px 8px;
   text-align: center;
   border-right: 1px solid var(--wellness-border);
@@ -343,6 +382,34 @@ header p {
 .selected-day {
   background: var(--wellness-mint) !important;
   font-weight: 700;
+}
+
+.habit-name {
+  display: flex;
+  justify-content: space-between !important;
+  align-items: center;
+  padding-right: 8px !important;
+}
+
+.delete-habit-btn {
+  background: transparent;
+  color: var(--wellness-muted);
+  border: none;
+  border-radius: 6px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  font-size: 14px;
+}
+
+.delete-habit-btn:hover {
+  background: #fee2e2;
+  color: #ef4444;
+  box-shadow: none;
+  transform: none;
 }
 
 .sleep-select {
