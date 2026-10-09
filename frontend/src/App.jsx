@@ -1580,12 +1580,12 @@ function App() {
                   >
                     <stop
                       offset="0%"
-                      stopColor="#2563eb"
-                      stopOpacity="0.18"
+                      stopColor="var(--wellness-sage)"
+                      stopOpacity="0.25"
                     />
                     <stop
                       offset="100%"
-                      stopColor="#2563eb"
+                      stopColor="var(--wellness-sage-light)"
                       stopOpacity="0.0"
                     />
                   </linearGradient>
@@ -1700,8 +1700,8 @@ function App() {
                   <path
                     d={linePath}
                     fill="none"
-                    stroke="#2563eb"
-                    strokeWidth="2.5"
+                    stroke="var(--wellness-sage-dark)"
+                    strokeWidth="3"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   />
