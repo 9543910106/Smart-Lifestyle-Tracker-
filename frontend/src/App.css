@@ -574,6 +574,17 @@ header p {
 .chart-point-circle { fill: var(--wellness-sage); }
 .chart-point-circle:hover { fill: var(--wellness-sage-dark); }
 
+.no-sleep-message {
+  margin: 20px 0;
+  padding: 24px;
+  background-color: var(--wellness-mint-light);
+  border: 1px dashed var(--wellness-sage-light);
+  border-radius: 12px;
+  color: var(--wellness-sage-dark);
+  text-align: center;
+  font-weight: 500;
+}
+
 /* ==========================================
    RESPONSIVE
 ========================================== */
